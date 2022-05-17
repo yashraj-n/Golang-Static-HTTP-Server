@@ -1,0 +1,25 @@
+name: Build
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  releases-matrix:
+    name: Build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        goos: [linux]
+        goarch: [amd64, arm64]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: wangyoucao577/go-release-action@v1.25
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          goos: ${{ matrix.goos }}
+          goarch: ${{ matrix.goarch }}
+          goversion: "https://dl.google.com/go/go1.17.8.linux-amd64.tar.gz"
+          project_path: './'
+          binary_name: 'api-http'
+          md5sum: false
